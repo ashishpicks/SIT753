@@ -19,7 +19,6 @@ pipeline {
             emailext (
                 subject: "Build Successful: Unit and Integration Tests",
                 body: "The unit and integration tests have passed successfully.",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                 attachLog: true
             )
         }
@@ -27,7 +26,6 @@ pipeline {
             emailext (
                 subject: "Build Failed: Unit and Integration Tests",
                 body: "The unit and integration tests have failed.",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                 attachLog: true
             )
         }
@@ -50,7 +48,6 @@ pipeline {
             emailext (
                 subject: "Build Successful: Security Scan",
                 body: "The security scan has passed successfully.",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                 attachLog: true
             )
         }
@@ -58,7 +55,6 @@ pipeline {
             emailext (
                 subject: "Build Failed: Security Scan",
                 body: "The security scan has failed.",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
                 attachLog: true
             )
         }

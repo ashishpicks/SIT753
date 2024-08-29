@@ -10,12 +10,27 @@ pipeline {
             }
         }
         stage('Unit and Integration Tests') {
-            steps {
-                echo 'Running unit and integration tests...'
-                // Example tool: JUnit, TestNG
-                // sh 'DMS test'
-            }
+    steps {
+        echo 'Running unit and integration tests...'
+        // sh 'DMS test'
+    }
+    post {
+        success {
+            emailext (
+                subject: "Build Successful: Unit and Integration Tests",
+                body: "The unit and integration tests have passed successfully.",
+                attachLog: true
+            )
         }
+        failure {
+            emailext (
+                subject: "Build Failed: Unit and Integration Tests",
+                body: "The unit and integration tests have failed.",
+                attachLog: true
+            )
+        }
+    }
+}
         stage('Code Analysis') {
             steps {
                 echo 'Performing code analysis...'
@@ -24,12 +39,27 @@ pipeline {
             }
         }
         stage('Security Scan') {
-            steps {
-                echo 'Performing security scan...'
-                // Example tool: OWASP Dependency-Check
-                // sh 'dependency-check.sh --project "MyApp"'
-            }
+    steps {
+        echo 'Performing security scan...'
+        // sh 'dependency-check.sh'
+    }
+    post {
+        success {
+            emailext (
+                subject: "Build Successful: Security Scan",
+                body: "The security scan has passed successfully.",
+                attachLog: true
+            )
         }
+        failure {
+            emailext (
+                subject: "Build Failed: Security Scan",
+                body: "The security scan has failed.",
+                attachLog: true
+            )
+        }
+    }
+}
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to the staging environment...'

@@ -10,27 +10,29 @@ pipeline {
             }
         }
         stage('Unit and Integration Tests') {
-    steps {
-        echo 'Running unit and integration tests...'
-        // sh 'DMS test'
-    }
-    post {
-        success {
-            emailext (
-                subject: "Build Successful: Unit and Integration Tests",
-                body: "The unit and integration tests have passed successfully.",
-                attachLog: true
-            )
+            steps {
+                echo 'Running unit and integration tests...'
+                // sh 'DMS test'
+            }
+            post {
+                success {
+                    emailext (
+                        subject: "Build Successful: Unit and Integration Tests",
+                        body: "The unit and integration tests have passed successfully. Logs are attached.",
+                        attachLog: true,
+                        to: 'eexpress.eentry@gmail.com'
+                    )
+                }
+                failure {
+                    emailext (
+                        subject: "Build Failed: Unit and Integration Tests",
+                        body: "The unit and integration tests have failed. Logs are attached.",
+                        attachLog: true,
+                        to: 'eexpress.eentry@gmail.com'
+                    )
+                }
+            }
         }
-        failure {
-            emailext (
-                subject: "Build Failed: Unit and Integration Tests",
-                body: "The unit and integration tests have failed.",
-                attachLog: true
-            )
-        }
-    }
-}
         stage('Code Analysis') {
             steps {
                 echo 'Performing code analysis...'
@@ -39,27 +41,29 @@ pipeline {
             }
         }
         stage('Security Scan') {
-    steps {
-        echo 'Performing security scan...'
-        // sh 'dependency-check.sh'
-    }
-    post {
-        success {
-            emailext (
-                subject: "Build Successful: Security Scan",
-                body: "The security scan has passed successfully.",
-                attachLog: true
-            )
+            steps {
+                echo 'Performing security scan...'
+                // sh 'dependency-check.sh'
+            }
+            post {
+                success {
+                    emailext (
+                        subject: "Build Successful: Security Scan",
+                        body: "The security scan has passed successfully. Logs are attached.",
+                        attachLog: true,
+                        to: 'eexpress.eentry@gmail.com'
+                    )
+                }
+                failure {
+                    emailext (
+                        subject: "Build Failed: Security Scan",
+                        body: "The security scan has failed. Logs are attached.",
+                        attachLog: true,
+                        to: 'eexpress.eentry@gmail.com'
+                    )
+                }
+            }
         }
-        failure {
-            emailext (
-                subject: "Build Failed: Security Scan",
-                body: "The security scan has failed.",
-                attachLog: true
-            )
-        }
-    }
-}
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to the staging environment...'
@@ -89,10 +93,20 @@ pipeline {
             // Cleanup actions, if needed
         }
         success {
-            echo 'Pipeline completed successfully!'
+            emailext (
+                subject: "Pipeline Completed Successfully",
+                body: "The entire pipeline has completed successfully. Logs are attached.",
+                attachLog: true,
+                to: 'eexpress.eentry@gmail.com'
+            )
         }
         failure {
-            echo 'Pipeline failed!'
+            emailext (
+                subject: "Pipeline Failed",
+                body: "The pipeline has failed. Logs are attached.",
+                attachLog: true,
+                to: 'eexpress.eentry@gmail.com'
+            )
         }
     }
 }
